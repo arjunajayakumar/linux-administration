@@ -43,3 +43,28 @@ In the command line $ - indicates that we are using the system as a normal user
 ![alt text](images/telda.png)
 
 ### Basic Linux commands
+* ls    - list directory contents.
+* cd    - change the current directory
+* pwd   - displys the present working directory
+* cat   - concatenates and displays fles
+* echo  - displays arguments to the screen
+* man   - displays the online manual
+* exit  - exits the shell or your current session
+* clear - clears the screen
+
+### Getting help at command line
+
+Navigating Man pages
+--------------------
+Enter - move down one line
+Space - move down one page
+g     - move to the top of the page
+G     - move to the bottom of the page
+q     - Quit   
+
+Enviornment variables
+----------------------
+* Storage location that has a name and a value
+* Typically uppercase
+* Access the contents by executing:
+    echo $VAR_NAME
