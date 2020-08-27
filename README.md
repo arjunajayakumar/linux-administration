@@ -362,3 +362,266 @@ locate pattern
  ```
 
  find works in real time and locate not. locate is faster than find
+
+ ### Viewing files and the nanao editor
+
+ ##### Displaying contents of files
+ cat file     - display contents of file
+ more file    - browse through a text file
+ less file    - more features than more
+ head file    - output the beginning(or top) portion of file
+ tail file    - output the ending(or bottom) portion of file.
+
+ * Head and tail displays only 10 lines by default
+ * We can chnage this behaviour with -n
+    * n = number of lines
+    * tail -15 file.txt
+
+    eg:
+    ```
+    head -5 test.txt - will display top 5 lines of test.txt
+    tail -6 test.txt - will display the last 6 lines of test.txt
+    tail -f test.txt - follow the file. ie new updations are getting updated in the terminal. eg: log file
+    ```
+
+* view files in real time :
+  ```
+  tail -f file follow the file: displays data as it is being written to the file
+  ```
+### Text editors
+#### Nano editor
+* simple editor.not much advanced than vim and emacs
+
+commands
+```
+ctrl + 0 - save
+ctrl + x - exit
+```
+
+#### Vi editor
+* Has advanced and powerful features
+* Not intuitive
+* Harder to learn than nano
+* requies time investment
+
+```
+vi [file]   - edit file
+vim [file]  - same as vi, but more features
+view[file]  - Starts vim in read-only mode
+```
+* vi has the concept of modes.
+    * command mode
+    * insert mode
+    * Line mode
+
+```
+Vi command Mode and Navigation
+k   Up one line
+j   Down one line
+h   Left one character
+i   right one charcter
+w   right one word
+b   left one word
+^   go to the beginning of the line
+$   go to the end of the line
+
+```
+
+##### Vi navigation keys
+![images](images/vi.jpg?raw=true "Title")
+
+##### Vi Insert mode
+```
+i   Insert at the cursor position
+I   Insert at the beginning of the line
+a   Append after the cursor position
+A   Appnend at the end of the line
+```
+##### Vi line mode
+```
+:w                    writes(saves) the file
+:w!                   forces the files to be saved
+:q                    Quit
+:q!                   Quit without saving changes
+:wq!                  write and quit
+:x                    same as :wq
+:n                    positions the cursor at line n
+:$                    positions the cursor on the last line
+:set nu               turn on line numbering
+:set nonu             turn off line numbering
+:help [subcommand]    get help    
+```
+
+##### Vi modes
+```
+Mode        key
+command     Esc
+insert      i l a A
+line        :
+```
+
+##### Vi repeating commands
+* repeat command by preceding it with a number
+    * 5k=Move up a line 5 times
+    * 80i<Text> <Esc> = insert<Text>80 times
+    * 80i_<Esc>=insert80"_" characters
+
+##### Vi-Deleting text
+```
+x     delete a character
+dw    delete a word
+dd    delete a line
+D     delete from the current position
+```
+
+##### Vi-changing text
+```
+r   replace the current character
+cw  change the current word
+cc  change the current line
+c$  change the ttext from current position
+C   same as c$
+~   reversres the case of a character
+```
+
+
+##### Vi-copying and pasting
+```
+yy            Yank(copy) the current line.
+y<position>   Yank the <position>
+p             Paste the most recent deleted or yanked text
+```
+##### Vi Undo/Redo
+```
+u       undo
+ctrl-R  redo
+```
+
+##### Vi searching
+```
+/<pattern>      start a forward search
+?<pattern>      start a reverse search
+```
+### Editing files with Emacs 
+ 
+ ```
+ emacs [file] edit file
+
+ C - <char>     Ctrl while pressing <char>
+ M(right alt key) - <char>     "Meta" key (alt key) while pressing <char>
+ M - <char>     Esc, then type <char>
+ ```
+
+ ##### Emacs commands
+ ```
+ Ctrl-h           Help
+ Ctrl-X C-c       exit
+ Ctrl-X C-s       save the file
+ Ctrl-h t         built-in tutroial
+ Ctrl-h k <key>   describe key
+```
+ ##### Emacs navigation
+ ```
+ Ctrl-p   previous line
+ Ctrl-n   next line
+ Ctrl-b   backward one character
+ Ctrl-f   forward one character
+ Ctrl-f   forward one word
+ M-f      forward one word
+ M-b      backward one word 
+ Ctrl-a   go to the beginnning of the line
+ Ctrl-e   go to the end of the line  
+ M-<      go to the beginning of the file
+ M->      go to the end of the file
+ ```
+
+ ##### Emacs - deleting text
+ ```
+ Ctrl-d    Delete a character
+ M-d    Delete a word
+ ```
+
+ ##### Emacs - Copying, Pasting, and Undo
+ ```
+ Ctrl-k    Kill(cut)
+ Ctrl-y    Yank(paste)
+ Ctrl-x u  Undo 
+ ```
+
+ ##### Emacs - Searching
+ ```
+ Ctrl-S     Start a forward search
+ Ctrl-r     Start a reverse search
+ ```
+
+ ##### Emacs - Repeating Commands
+ ```
+ Ctrl-u N <command>  Repeat <command> N times 
+ ```
+
+ ### Deleting, copying, moving and renaming files
+
+ ##### Removing files
+ ```
+ rm file      Remove file
+ rm -r dir    remove the directory nad its contents recursively
+ rm -f file   force removal and never propmt confirmation
+ ```
+
+ ##### Copying files
+ ```
+cp source_file destination_file         copy source file to destination file
+cp src_file1 [src_fileN ...] dest_dir   copy source_files to destination_directory   
+```
+##### cp Options
+```
+cp -i                                       - run in interactive mode
+cp -r  source_directory destination         - copy src_directory recursively to destination
+```
+
+##### Moving and renaming files
+```
+mv                        move or rename files and directories
+mv source destination     move source to destination
+mv -i source destination  move source to destination in interactive mode 
+```
+
+##### Sort Data
+```
+sort file     - sort text in file
+```
+
+##### Sort options
+-k F    Sort by key. F is the filed number
+-r      Sort in reverse order
+-u      Sort unique
+
+##### creating a collection of files
+```
+tar [-] c|x|t f tarfile [pattern]   - Create, extract or list contents of a tar archive using pattern, if supplied
+```
+
+##### Tar Options
+```
+C         Create a tar archive
+X         extract files from the archive
+t         display the table of contents(lists)
+V         be verbose
+Z         Use compression
+f file    Use this file
+```
+
+###### Compressing files to save space
+```
+gzip      - compress files
+gunzip    - uncompress files
+gzcat     - concatenates compressed files
+zcat      - conatenates compressed files
+```
+
+##### Disk Usage
+```
+du        Estimates file usage
+du -k     display sizes in kilobytes
+du -h     display sizes in human readable format
+```
