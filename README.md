@@ -1,8 +1,10 @@
-# linux-administration
+# Linux-administration
 
-## Linux directory structure
+## 01 Linux Fundementals
 
-![alt text](images/directory structure.png)
+### Linux directory structure
+
+![images](images/directoryStructure.png?raw=true "Title")
 
 The most common directories known are,
 
@@ -41,13 +43,14 @@ In the command line $ - indicates that we are using the system as a normal user
 * Root access may be reqiired to install, start, or stop an aplication
 * Day to day activities will be performed using a normal account
 
-![alt text](images/shell.png)
+![images](image/shell.png?raw=true "Title")
+
 
 ~  - represents home directory
 
-![alt text](images/telda.png)
+![images](images/telda.png?raw=true "Title")
 
-### Basic Linux commands
+#### Basic Linux commands
 ```
 * ls    - list directory contents.
 * cd    - change the current directory
@@ -58,7 +61,7 @@ In the command line $ - indicates that we are using the system as a normal user
 * exit  - exits the shell or your current session
 * clear - clears the screen
 ```
-### Getting help at command line
+#### Getting help at command line
 
 Navigating Man pages
 --------------------
@@ -95,7 +98,7 @@ Summary
 * ask commands for help with --help or -h
 * search man pages by using man -k 
 
-### Working with directories
+#### Working with directories
 
 * are containers for other files and directories
 * Provide a tree like structure
@@ -128,6 +131,190 @@ rm -rf directory
 ```
 eg: rm -rf dir/dir1
 ```
+
+### Listing files with LS output
+
+#### Decoding ls -l Output
+
+```
+-rw-rw-r--. 1 arjun arjun 0 Aug 26 09:14 current
+```
+```
+Permissions                   -rw-rw-r--
+Number of links               1
+Owner name                    arjun
+Group name                    arjun
+number of bytes in the file   10400
+last modification time        aug 26 09:14
+file name                     current
+```
+
+##### Listing all files, including Hidden Files
+1. Hidden files begin with a period. sometimes called "dot files"
+2. Hidden files are not displayed by default
+3. To show hidden files with ls, use ls -a
+4. Command options can be combined:
+   ls -l -a is the same as ls -la and ls -al
+
+##### Listing files by types
+Use ls -F to reveal file types.
+    /   Directory
+    @ Link
+    * Executable
+
+##### Symbolic links
+
+* A link is a points to the actual file or directory
+* Use the link as if were the file
+* A link can be used to create a shortcut
+    * use for long file or dirctory names
+    * Use to indicate the current version of the software
+
+##### Listing files by time and in reverse
+ls -t       List files by time
+ls -r       list files in reverse order
+ls -latr    long listing including all files reverse sorted by time
+ls -R       lists files recursively
+ls -d       list directory name, not contents
+ls --color  colorize the output
+
+##### The tree command
+Similar to ls -R but creates visual output
+
+tree -d List directories only
+tree -C colorize output
+
+##### Working with spaces in names
+* just say no to spaces!
+* Alternatives:
+  * Hyphens(-)
+  * Underscores(_)
+  * CamelCase
+
+* Encapsulate the entire file name in quotes
+* Use a backslash(\) to escape spaces
+
+### File and directory permisions expalined part 1
+
+Permissions
+----------- 
+```
+[arjun@localhost Desktop]$ ls -l
+total 4
+drwxrwxr-x. 2 arjun arjun  6 Aug 27 03:30  1
+```
+```
+Symbol                    Type
+------                    ----
+-                         Regular file
+d                         Directory
+l                         Symbolic link
+r                         read
+w                         write
+x                         execute
+
+```
+
+Permission categories
+---------------------
+```
+Symbol    Category
+u           User
+g           Group
+o           Other
+a           All
+```
+
+Groups
+
+* Every user is in at least one group called primary group
+* Users can belong to many groups
+* Groups are used to organize users
+* The groups command displays a users groups
+* you can also use id -Gn
+
+
+Secret Decoder ring
+-------------------
+```
+[arjun@localhost Desktop]$ ls -l
+drwxrwxr-x. 2 arjun arjun  6 Aug 27 03:30  1
+
+```
+![images](images/decoderring.jpg?raw=true "Title")
+
+Changing permissions
+--------------------
+```
+item        Meaning
+chmod       change mode command 
+ugoa        User category user, group, other, all
++-=         Add, subtract, or set permissions
+rwx         read,write, execute
+
+```
+
+chmod g+w  - Add write permission to the group
+chmod g-w  - remove wrote permission to the group
+chmod g+wx - giving write and read permission
+chmod a=r  - giving all users read permission
+
+##### Numeric based Permissions
+
+```
+ r      w     x
+ 0      0     0   Value for off
+ 1      1     1   Binary value for on
+ 4      2     1   base 10 value for on 
+```
+##### Permission description
+![images](images/binaryDesc.jpg?raw=true "Title")
+
+##### order Has meaning
+![images](images/order.jpg?raw=true "Title")
+
+##### Commonly used permissions
+![images](images/commonlyUsed.jpg?raw=true "Title")
+
+* 777 or 666 permission allows everone full permission to the directory
+* if multiple users need write access, consider using groups and limiting their access to members of the group
+* generally it is a good practice to avoid 666 and 777
+
+##### Working with groups
+* New files belong to your primary group
+* The chggrp command changes the group
+```
+eg: chgrp sales sales.data
+```
+##### File creation mask
+* File creation mask determines default permissions
+* if nomask were used permissions would be:
+  * 777 for directories
+  * 666 for files
+
+##### The umask command
+```
+eg: umask [-s] [mode]
+```
+* Sets the file crea tion mask to mode, if given.
+* Use -S to for symbolic notation
+
+##### common umask modes
+* 022
+* 002
+* 077
+* 007
+
+![images](images/special_modes.jpg?raw=true "Title")
+
+##### Summary
+Permissions are classified in to:
+* Symbolic permissions
+* Numeric/octal permissions
+* Effect of permissions on directory is slightly diffretnt than files inside it
+* file permissions can be chnaged ny using chmod and group permissions can be chnaged by sing chgrp command
+* 
+
 ### Finding files and directories
 
 #### The find command
@@ -151,7 +338,7 @@ Run command against all the files that are found.
 find                           - find everthing in the working directory
 find .                         - find everything in the current directory
 find /sbin -name makedev       - find the file/folder named makedev(case sensitive)
-find /sbin -iname makedev      -  find the file/folder named makedev(case insensitive)
+find /sbin -iname makedev      - find the file/folder named makedev(case insensitive)
 find /bin -name *v             - find file that ends with v
 find . -mtime +10 -mtime -13   - find files in which is greater than 10 days and less than 13 days
 find -name s* -ls              - find files that starts with s and perform ls on it
