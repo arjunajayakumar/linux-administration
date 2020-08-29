@@ -1,7 +1,6 @@
 # Linux-administration
 
 ## 01 Linux Fundementals
-
 ### Linux directory structure
 
 ![images](images/directoryStructure.png?raw=true "Title")
@@ -43,7 +42,13 @@ In the command line $ - indicates that we are using the system as a normal user
 * Root access may be reqiired to install, start, or stop an aplication
 * Day to day activities will be performed using a normal account
 
-![images](image/shell.png?raw=true "Title")
+#### Tilde Expansion
+```
+~jason  = /home/jason
+~pat    = /home/pat
+~root   = /root
+~ftp    = /srv/ftp
+```
 
 
 ~  - represents home directory
@@ -196,8 +201,7 @@ tree -C colorize output
 
 ### File and directory permisions expalined part 1
 
-Permissions
------------ 
+##### Permissions
 ```
 [arjun@localhost Desktop]$ ls -l
 total 4
@@ -215,8 +219,8 @@ x                         execute
 
 ```
 
-Permission categories
----------------------
+##### Permission categories
+
 ```
 Symbol    Category
 u           User
@@ -234,8 +238,7 @@ Groups
 * you can also use id -Gn
 
 
-Secret Decoder ring
--------------------
+##### Secret Decoder ring
 ```
 [arjun@localhost Desktop]$ ls -l
 drwxrwxr-x. 2 arjun arjun  6 Aug 27 03:30  1
@@ -243,8 +246,8 @@ drwxrwxr-x. 2 arjun arjun  6 Aug 27 03:30  1
 ```
 ![images](images/decoderring.jpg?raw=true "Title")
 
-Changing permissions
---------------------
+##### Changing permissions
+
 ```
 item        Meaning
 chmod       change mode command 
@@ -624,4 +627,287 @@ zcat      - conatenates compressed files
 du        Estimates file usage
 du -k     display sizes in kilobytes
 du -h     display sizes in human readable format
+```
+
+## 02 Intermediate Linux skills
+
+##### Wild cards
+
+* A charcter or string used for pattern matching
+* Globbing expands the wildcard pattern into a list of files and/or directories(paths)
+* Wildcards can be used with most commands
+```
+  * ls
+  * rm
+  * cp
+```  
+* *- matches zero or more characters
+  * *.txt
+  * a*
+  * a*.txt
+* ?- matches excatly one character
+  * ?.txt
+  * a?
+  * a?.txt  
+
+##### More wildcards - Character classes
+* [] - A character class
+  * Matches any of the characters included between the brackets. Matches exactly one character.
+  * [aeiou]
+  * ca[nt]*
+    * can
+    * cat
+    * candy
+    * catch
+* [!] - Matches any of the charcters NOT included between the brackets. Matches exactly one character
+  * [!aeiou]*
+    * baseball
+    * cricket 
+##### More wildcards - ranges
+* use two charcters seperated by a hypen to create a range in a character class 
+* [a-g]*    - Matches all files that start with a, b, c d, e, f, or g.
+* [3-6]*    - Matches all files that start with 3,4,5 or 6
+
+##### Named character classes
+```
+* [[:alpha:]]
+* [[:alnum:]]
+* [[:digit:]]
+* [[:lower:]]
+* [[:space:]]
+* [[:upper:]]
+```     
+##### Matching wildcard patterns
+* \ - escape charcter. Use if you want to match a wildcard character
+  * Match all files that end with a question mark:
+    * *\?
+      * done?
+
+### I/O redirection
+There are three different I/O types:
+```
+I/O Name              Abbrevation           File Description
+standarad input         stdin                     0
+standard output         stdout                    1  
+standard error          stderr                    2    
+```
+
+##### Redirection
+```
+>         redirects standard output to a file. Overwrites(truncating) existing contents
+>>        redirects standard output to a file. appends to any existing contents
+<         redirects input from a file to  a command
+&         used with redirection to signal that a file descriptor is being used 
+2>&1      combine stderr and standard output
+2>file    redirect standard error to a file
+```
+
+#### The null device
+```
+>/dev/null  redirect output to nowhere
+
+```
+### Comparing files
+* Comparing the contents of files
+```
+diff file1 file2      compare two files
+sdiff file1 file2     side-by-side comparison
+vimdiff file1 file2   highlight differences in vim
+```
+
+* diff output
+```
+$ diff file1 file2
+3c3   - LineNumFile-Action-LineNumFile2
+      - Action = (A)dd (C)hange (D)elete
+...
+```
+$ diff file1 file2
+3c3
+< this is a line in a file.
+---
+> this is a line in a file!
+```
+< Line from file1
+> Line from file2
+```
+
+* sidff Output
+```
+$ sdiff file1 file2
+line in file2 | line in file2
+              > more in file2
+| differing lines
+< line from file1
+> line from file2
+```
+
+* vimdiff
+```
+ctrl -w w   go to next window
+:q          quit (close current window)
+:qa         quit all(close both files)
+:qa!        force quit all
+```
+
+### Searching in files using pipes
+##### The grep command
+grep display lines matching a pattern
+```
+grep pattern file
+```
+##### grep options
+```
+-i  performs a search, ignoring case
+-c  count the number of occurences in a file
+-n  precede output with line numbers
+-v  invert match. print lines that don't match 
+```
+eg:
+```
+[arjun@localhost Desktop]$ grep o secret          - perform a search for 'o' in secret 
+2 site: facebook.com
+3 user: jason
+
+[arjun@localhost Desktop]$ grep -v o secret       - Perform a invert search 
+1 tags: credentials
+4 pass: Abee!
+
+[arjun@localhost Desktop]$ grep User secret       - case sensitive
+
+[arjun@localhost Desktop]$ grep -i User secret    - avoid case sensitivity
+3 user: jason
+
+[arjun@localhost Desktop]$ grep -ci User secret   - count the number of occurances
+1
+
+[arjun@localhost Desktop]$ grep -ni User secret   - will show the line number
+3:3 user: jason
+[arjun@localhost Desktop]$ cat secret
+1 tags: credentials
+2 site: facebook.com
+3 user: jason
+4 pass: Abee!
+5 tags: credentials
+new last line
+[arjun@localhost Desktop]$ 
+```
+##### The file command
+```
+file file_name    : display the file type
+```
+eg:
+```
+$file sales.data
+sales.data: ASCII text
+$file *
+bin: directory
+jason.tar: POSIX tar arhive
+
+```
+##### Searching for text in binary files
+```
+strings       : Display printable strings
+```
+
+##### Pipes
+```
+| Pipe symbol
+
+command-output | command0input
+```
+```
+grep pattern file 
+
+is same as 
+
+cat file | grep pattern
+```
+
+##### The cut command
+```
+cut[file]     : Cutout seletced portions of file. if file is ommited, use standard input
+```
+##### Cut options
+```
+-d delimiter      Use delimeter as the field seperator
+-f N              display the Nth field
+```
+
+##### Searching and pipe examples
+* Find all users named "arjun" in /etc/passwd
+* Print account name and real name
+* Print in alphabetical order by account name
+* Print in tabular format
+```
+[arjun@localhost Desktop]$ grep arjun /etc/passwd | cut -d: -f1,5 | sort | tr ":" " " | column -t
+arjun:Arjun,,,,
+
+```
+This command will serach for arjun in /etc/passwd and cut the filed f1 and field 5, sort it and replace the colon with space and display the whole result as column
+
+##### Piping out to  a pager
+* more
+* less
+
+### copying files over the network
+```
+SCP   - Secure copy
+SFTP  - SSH file transfer protocol
+```
+* Command line SCP Clients
+```
+* scp
+* sftp
+* PuTTY Secure Copy client-pscp.exe
+* PuTTY Secure file transfer client-psftp.exe
+```
+* graphcal SCP/SFTP Clients
+```
+* Cyberduck
+* FileZilla
+* WinSCP
+```
+* scp/sftp command line utilities
+```
+scp source destination  : copy source to destination
+sftp host               : start a secure file transfer session with host        
+```
+* ftp command line utility
+```
+ftp host    : start a file transfer session with host
+Note than ftp is not a secure mechanism for tranfering files. because it will send the credentials as plain text and not encrypted
+```
+* sftp eg:
+```
+sftp servername
+sftp> pwd   - will print the working directory of the remote machine
+lpwd        - will print the local working directory
+put z.text  - will copy z.text to the remote machine
+rm z.text   - will remove z.text from remote
+sftp adminuser@linuxsvr
+
+```
+* scp eg:
+```
+scp z.txt servername:/tmp/   - we need to prove the remote location
+scp z.txt servername:~       - copy z.txt to the home directory  
+scp z.txt adminuser@linuxsvr:/home/adminuser - copy file as a adminuser
+```
+
+### Customizing the shell Prompt
+* Customizing the prompt with PS1
+```
+\d    Date in ""Weekday month date" format "Tue may 26"
+\h    Host name up to the first perriod
+\H    Hostname
+\n    NewLine
+\t    Current time in 24-hour HH:MM:SS format
+\T    Current time in 12-hour HH:MM:SS format
+\@    Current time in 12-hour am/pm format
+\A    Current time in 24-hour HH:MM format
+\u    Username of the current user
+\w    Current working directory
+\W    Basename of the current working directory
+\$    if the effective UID is 0, a #, otherwise a $
 ```
