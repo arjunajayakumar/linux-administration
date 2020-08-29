@@ -911,3 +911,121 @@ scp z.txt adminuser@linuxsvr:/home/adminuser - copy file as a adminuser
 \W    Basename of the current working directory
 \$    if the effective UID is 0, a #, otherwise a $
 ```
+### Shell aliases
+* they are shortcuts
+* use for long commands
+* use for commands you type often
+syntax:
+```
+alias [name[=value]]
+
+* List or create aliases
+* user name = value to create a new alias
+```
+* eg:
+```
+[arjun@localhost ~]$ alias ll='ls -l'
+```
+* Fix typos
+```
+$ alias grpe= 'grep'
+```
+* Make linux behave like another OS
+```
+$ alias cls = 'clear'
+```
+* Remove Alias
+```
+unalias name : Remove the 'name' alias.
+unalias -a   : Remove all aliases
+```
+##### Persisiting aliases 
+* Add aliases to our perrsonal initialization files
+  * .bash_profile
+
+### Processes and Job control
+syntax:
+```
+ps    : Display process status
+```
+##### ps Options
+```
+-e              : everything, all processes
+-f              : full format listing
+-u username     : display username's processes
+-p pid          : display information for PID
+```
+##### Common ps commands
+```
+ps -e             display all process
+ps -ef            display all processes, full
+ps -eH            display a process tree
+ps -e --forest    display a process tree
+ps -U username    display users processes
+```
+##### other ways to view processes
+```
+pstree      display processes ina tree format
+top         interactive process viewer
+htop        interactive process viewer
+```
+
+##### Background and foreground process
+```
+command &     Start command in background
+ctrl - C      kill the foregriund process
+ctrl - Z      suspend the foreground process
+bg [%num]     background suspended process
+fg [%num]      foreground a background process
+kill          kill aprocess by job number or PID
+jobs [%num]   list jobs
+```
+
+##### Killing Processes
+```
+ctrl-c            kills the background proc
+kill [-sig] pid   send a signal to a process
+kill -l           display a list of signals
+kill 123      
+kill -15 123
+kill -TERM 123 kill -9 123
+```
+
+### Scheduling repeated jobs with cron
+* Cron - A time based jon scheduling service
+* crontab - A program to create, read , update, and delete your job schedules
+* use cron to schedule and automate tasks
+
+##### using Crontab command
+```
+crontab file    install a new crontab from file
+crontab -l      list your cron jobs
+crontab -e      edit your cron jobs
+crontab -r      remove all of your cron jobs
+```
+
+### Switching users and running commands as others
+```
+The su command
+su [username]     : Change user ID or become superuser
+-                 : an hyphen is used to provide an enviorment similar to what the user would expect had     the user logged correctly
+-c command        :specify a command to be executed
+```
+
+##### Sudo
+```
+sudo -l               : list available commands
+sudo command          : run command as root
+sudo -u root command  : same as above
+sudo -u user command  : run as user
+sudo su               : switch to the superuser account
+sudo su -             : switch to the superuser account with root's enviornment
+sudo su - username    : switch to the username account   
+sudo -S               : start a shell
+sudo -u root -S       : same as sudo -S
+sudo -u user -S       : start a shell as user 
+```
+##### Changing the sudo configuration
+```
+visudo          : edit the /etc/sudoers file
+``` 
