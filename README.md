@@ -1029,3 +1029,4 @@ sudo -u user -S       : start a shell as user
 ```
 visudo          : edit the /etc/sudoers file
 ``` 
+## 02 Linux Boot Process
