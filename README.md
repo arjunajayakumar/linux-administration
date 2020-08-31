@@ -1029,4 +1029,48 @@ sudo -u user -S       : start a shell as user
 ```
 visudo          : edit the /etc/sudoers file
 ``` 
-## 02 Linux Boot Process
+## 04 Linux boot processs
+## 05 Disk Management
+
+## 06 LVM - Logical volume manager
+* Aggregate multiple storage devices into a single logical volume
+* We can create file system that extend across multiple storage devices
+* Expand or shrink filesystems in real-time while the data remains online and fully accessible
+* Migrate data from one storage device to another while online.
+* We can use human-readable device names of our choosing
+```
+/dev/vg_database/lv_db_logs VS /dev/sdb3
+```
+* increase throughput by allowing system to read data in parallel
+* Increse fault tolerance and reliablilty by having more than one copy of data(data mirroring)
+* create point-in-time snapshots of filesystems
+
+##### LVM: Layers of abstraction
+![images](images/lvm.jpg?raw=true "Title")
+1. Physical volumes layer - physical devices that are being used by LVM. these device need not have to be physical, they just have to be made available to linux operating system or as long as linux sees the device as a block staorage device, it can be used as a physical volume.
+2. Volume group(VG) layer - Volume group is mage up of one or more physical volume.
+3. Logical volume layer - logival volume layers are created from a volume group. file systems are thaen created on top of it.
+
+###### Logical volume creation process
+* Create one or more physical volumes
+* Create a volume group from those one or more physical volumes
+* Create one or more logical volumes from the volume group
+* create a file system on the logical volumes and mount it to a path
+
+###### LVM commands
+```
+1. pvcreate /dev/sdb                  - to create a physical volume
+2. vgcreate vg_app /dev/sdb           - to create a volume grroup
+3. lvcreate -L 20G -n lv_data vg_app  - to create a logical volume of 20GB
+4. mkfs -t ext4 /dev/vg_app/lv_data   - make a file system on top of the logical volume
+5. mkdir /data                        - make a directory to mount the logical volumes
+6. mount /dev/vg_app/lv_data/data     - mount the logical volumes
+
+* lvmdiskscan                         - to view the disks
+* lsblk                               - to view the block disks 
+* lsblk - p                           - to view the path of each blocks
+* df -h
+* pvs                                 - view physical volumes
+* vgs                                 - view volume groups
+* lvdisplay                           - to view the LV summary
+```
