@@ -1073,4 +1073,37 @@ visudo          : edit the /etc/sudoers file
 * pvs                                 - view physical volumes
 * vgs                                 - view volume groups
 * lvdisplay                           - to view the LV summary
+* pvdisplay -m                        - to view the physical volume map
+```
+###### Extending volume groups and Logical volumes
+```
+1. lvmdiskscan
+2. pvcreate /dev/sdc
+3. vgextend vg_app /dev/sdc
+```
+###### Mirroring Logical volumes
+```
+1. lvmdiskscan
+2. pvcreate /dev/sdd /dev/sde
+3. vgcreate vg_safe /dev/add/dev/sde
+4. lvcreate -m 1 -L 5G  -n lv_secrets vg_safe
+5. mkfs -t ext4 /dev/vg_safe/lv_secrets
+6. mkdir /secrets
+7. mount /dev/vg_safe/lv_secrets/secrets
+```
+
+###### Removing LV's, PV's and VG's
+```
+1. umount /secrets
+2. lvremove /dev/vg_safe/lv_secrets
+3. vgreduce vg_safe /dev/sde
+4. pvremove /dev/sde
+5. vgremove vg_safe
+```
+
+###### Migrating data from one storage device to another
+```
+1. pvcreate /dev/sde
+2. vgextend vg_app /dev/sde
+3. pvmove /dev/sdb /dev/sde
 ```
