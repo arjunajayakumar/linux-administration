@@ -1107,3 +1107,157 @@ visudo          : edit the /etc/sudoers file
 2. vgextend vg_app /dev/sde
 3. pvmove /dev/sdb /dev/sde
 ```
+
+###### Manage Users and groups
+* Accounts have a:
+  * Username(or login ID)
+  * UID(User ID). This is a unique number
+  * Default group
+  * Comments
+  * Shell
+  * Home directory location
+
+###### AddUser
+```
+useradd[options] username
+-c "COMMENT"      - Comments for the account
+-m                - Create the home directory
+-S /shell/path    - The path to the user's shell
+-g GROUP          - specify the default group
+-G GROUP1, GROUPN - Additional groups
+```
+* eg:
+```
+useradd -C "Grant Stewart" -m -S /bin/bash grant
+```
+* create password using passwd
+```
+passwd grant
+```
+
+###### Delete user
+```
+userdel[-r] username
+```
+```
+# ls/home 
+eharris grant
+# userdel eharris
+# ls /home
+eharris grant
+# userdel -r grant
+# ls /home
+eharris
+```
+
+###### Modify user
+```
+usermod [options] username
+```
+```
+-c "COMMENT"      - Comments for the account
+-g GROUP          - specify the default group
+-G GROUP1, GROUPN - Additional groups
+-S /shell/path    - path to the user's shell
+```
+###### Groups
+* Group details are stored in the /etc/group file
+```
+# groups root
+root:root
+# groups arjun
+arjun:arjun
+```
+* create group
+```
+# groupadd web
+# tail -1 /etc/group
+# groupad -g 2500 db
+# tail -1 /etc/group
+db:x:2500
+```
+* Delete a group
+```
+# groupdel db
+```
+* Modify group
+```
+* groupmod [options] group_name
+* -g GID    change the group ID to GID
+* -n GROUP  Rename the group to GROUP
+```
+
+##### Networking
+
+###### DNS hostnames
+* FQDN - fully qualified domain name
+  * webprod01.mycompany.com
+* TLD(top level domains)
+  * .com, .net, .org, etc
+* Domains
+  * below(to the left of) TLD
+* sub-domain
+  * below(to the left of) the domain
+  * webprod01.ny.us.mycompany.com  
+
+###### Display Hostname
+```
+$ hostname
+wbprod01
+$ uname -n
+webprod01
+$ hostname -f
+webprod01.mycomapny.com
+```
+###### Setting hostname
+```
+# hostname webprod01
+# echo 'webprod01' > /etc/hostname
+# vi /etc/sysconfig/network
+HOSTNAME=webprod01
+```
+
+###### DHCP, Dynamic and static addressing
+* Network ports
+  * When a service starts it binds itself to a port
+  * port 1 - 1023 are well-known ports
+    * 22 - SSH
+    * 25 - SMTP
+    * 80 - HTTP
+    * 143 - IMAP
+    * 389 - LDAP
+    * 443 - HTTPS
+* DHCPservers assign IP address to DHCP clients
+  * IP address
+  * netmask
+  * gateway
+  * DNS servers
+
+ ##### The netstat command
+ ```
+-n Display numerical addresses and ports.
+-i Displays a list of network interfaces.
+-r Displays the route table. (netstat -rn)
+-p Display the PID and program used.
+-l Display listening sockets. (netstat -nlp)
+-t Limit the output to TCP (netstat -ntlp)
+-u Limit the output to UDP (netstat -nulp)    
+ ```
+
+ ###### Packet sniffing with tcpdump
+ ```
+ tcpdump
+-n Display numerical addresses and ports.
+-A Display ASCII (text) output.
+-v Verbose mode. Produce more output.
+-vvv Even more verbose output.
+ ```
+
+ ###### Special Permission modes
+ * When a process is started, it runs using the starting user's UID and GID
+ * setuid = set User ID upon execution
+ * -rwsr-xr-x 1 root root /usr/bin/passwd
+ * ping
+ * chsh
+ * setuid files are an attack surface
+ * Not honored on shell scripts
