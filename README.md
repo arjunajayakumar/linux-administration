@@ -1046,7 +1046,7 @@ visudo          : edit the /etc/sudoers file
 * create point-in-time snapshots of filesystems
 
 ##### LVM: Layers of abstraction
-![images](images/lvm.jpg?raw=true "Title")
+![images](images/LVM.jpg?raw=true "Title")
 1. Physical volumes layer - physical devices that are being used by LVM. these device need not have to be physical, they just have to be made available to linux operating system or as long as linux sees the device as a block staorage device, it can be used as a physical volume.
 2. Volume group(VG) layer - Volume group is mage up of one or more physical volume.
 3. Logical volume layer - logival volume layers are created from a volume group. file systems are thaen created on top of it.
